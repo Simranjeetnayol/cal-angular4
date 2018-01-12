@@ -1,0 +1,74 @@
+<div class="container">
+    
+    <div class="calendar">
+            <div class="calendar-nav">
+                <p class="title">Angular4  Calendar</p>
+            </div>
+        
+            <div>
+                <div class="nav">
+                    <button (click)="prevMonth()">&lt;</button>
+                    <span class="ctn">{{this.currentDate.format("MMMM")}}</span>
+                    <button (click)="nextMonth()">&gt;</button>
+                </div> 
+                <div class="nav">
+                    <button (click)="prevYear()">&lt;</button>
+                    <span class="ctn">{{this.currentDate.format("YYYY")}}</span>
+                    <button (click)="nextYear()">&gt;</button>
+                </div> 
+            </div> 
+        
+            <table class="week" >
+                <tr>
+                <td *ngFor = "let name of dayNames" class="weekName">{{name}}</td>
+                </tr>
+            </table>
+            <div class="cal-data">
+                <div *ngFor = "let week of Weeks" class="weeks">
+                    <ng-container *ngFor = "let day of week">
+                        <div class="week-date disabled" *ngIf="!isSelectedMonth(day.mData)">
+                            <div class="date-text">{{day.mData.date()}}</div>
+                        </div>
+                        <div class="week-date week-enable enabled" 
+                        *ngIf="isSelectedMonth(day.mData)"
+                        (dblclick) = "selectDate(day.mData)"
+                        [ngClass] = "{ 'today': todayCheck(day.mData)}">
+                        <div class="date-text">{{day.mData.date()}}</div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+  </div>
+
+  <div class="rightSide">
+        <div class="eventPanel">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Add Event</div>
+                    <form [formGroup]="dateEvent" (ngSubmit) = "onClickSubmit(dateEvent.value)" class="panel-body">
+                        <input type="text" placeholder="Date" class="dateInput" formControlName="eventDate">
+                        <textarea type="text" placeholder="Enter the event description..." rows="4" class="datearea" formControlName="desc"></textarea>
+                        <input type="submit" [disabled]="!dateEvent.valid"   value="Done" class="btn btn-primary ">
+                    </form>
+              </div>
+        </div>
+        <div class="display">
+              <div *ngFor = "let item of Store">
+                    <div class="contant">
+                        <div style="width :80%">
+                            <p> <i class="fa fa-calendar" aria-hidden="true"></i> Events : {{item.Event}}</p>
+                            <p>Description : {{item.Description}}</p>
+                        </div>
+                        <div style="width: 10% ; padding: 15px"
+                        (click)="deleteItems(Store,item)">
+                            <i class="fa fa-times-circle-o fa-lg" aria-hidden="true"></i>
+                        </div>
+                        <div style="width: 10%; padding: 15px"
+                        (click)="editItem(Store,item)">
+                            <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                        </div>
+                    </div>
+              </div>
+        </div>
+  </div>
+
+</div>
